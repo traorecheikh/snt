@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SunuTontine V1.0 "TERANGA" - Roadmap Interactive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 1.25rem; /* left-5 */
+            top: 1.25rem; /* top-5 */
+            bottom: -1.25rem; /* -bottom-5 */
+            width: 2px;
+            background-color: #e2e8f0; /* slate-200 */
+            transform: translateX(-50%);
+        }
+        .timeline-item:last-child::before {
+            display: none;
+        }
+        .active-week {
+            border: 2px solid #2563eb; /* blue-600 */
+            box-shadow: 0 10px 15px -3px rgb(37 99 235 / 0.2), 0 4px 6px -4px rgb(37 99 235 / 0.2);
+        }
+        .active-week .week-indicator {
+            background-color: #2563eb; /* blue-600 */
+            color: white;
+        }
+        .pause-week {
+            border: 2px dashed #64748b; /* slate-500 */
+        }
+        .pause-week .week-indicator {
+             background-color: #64748b; /* slate-500 */
+             color: white;
+        }
+        details summary {
+            list-style: none;
+            cursor: pointer;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary .arrow {
+            transition: transform 0.2s;
+        }
+        details[open] summary .arrow {
+            transform: rotate(90deg);
+        }
+        .role-tag {
+            position: relative;
+            cursor: pointer;
+        }
+        .role-tooltip {
+            visibility: hidden;
+            width: 220px;
+            background-color: #1e293b; /* slate-800 */
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -110px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+            line-height: 1.2;
+        }
+        .role-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1e293b transparent transparent transparent;
+        }
+        .role-tag:hover .role-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .role-pm { background-color: #eef2ff; color: #4338ca; } /* indigo */
+        .role-ops { background-color: #fdf2f8; color: #be185d; } /* pink */
+        .role-qa { background-color: #ecfdf5; color: #047857; } /* emerald */
+        .role-sec { background-color: #fffbeb; color: #b45309; } /* amber */
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">
+                    🚀 <span class="text-blue-600">Sunu</span>Tontine <span class="text-sm font-medium text-slate-500">V1.0 "TERANGA"</span>
+                </h1>
+                <div id="current-date" class="hidden md:block text-right">
+                    <p class="font-semibold text-slate-700"></p>
+                    <p class="text-sm text-slate-500">La Qualité avant la Quantité</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <!-- Team Section -->
+        <section id="team" class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 text-center">L'Équipe Fondatrice</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Cheikh Tidiane -->
+                <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow">
+                    <img src="https://placehold.co/100x100/4F46E5/FFFFFF?text=CT" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-slate-200" alt="Cheikh Tidiane">
+                    <h3 class="text-xl font-bold">Cheikh Tidiane</h3>
+                    <p class="text-slate-500 mb-3">Sénégal 🇸🇳</p>
+                    <div class="flex flex-wrap justify-center gap-2 text-xs font-medium">
+                        <span class="role-tag"><span class="role-pm px-2 py-1 rounded-full">PM</span><span class="role-tooltip">Project Manager: Gardien de la vision et du planning.</span></span>
+                        <span class="role-tag"><span class="role-pm px-2 py-1 rounded-full">PO</span><span class="role-tooltip">Product Owner: Définit les fonctionnalités et priorise le backlog.</span></span>
+                        <span class="role-tag"><span class="role-pm px-2 py-1 rounded-full">Backend</span><span class="role-tooltip">Développement du serveur en Spring Boot.</span></span>
+                        <span class="role-tag"><span class="role-pm px-2 py-1 rounded-full">Flutter</span><span class="role-tooltip">Développement de l'application mobile.</span></span>
+                    </div>
+                </div>
+                <!-- Houleymatou Diallo -->
+                <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow">
+                    <img src="https://placehold.co/100x100/D946EF/FFFFFF?text=HD" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-slate-200" alt="Houleymatou Diallo">
+                    <h3 class="text-xl font-bold">Houleymatou Diallo</h3>
+                    <p class="text-slate-500 mb-3">Sénégal 🇸🇳</p>
+                    <div class="flex flex-wrap justify-center gap-2 text-xs font-medium">
+                        <span class="role-tag"><span class="role-ops px-2 py-1 rounded-full">Business</span><span class="role-tooltip">Responsable de la stratégie commerciale et des opérations.</span></span>
+                        <span class="role-tag"><span class="role-ops px-2 py-1 rounded-full">UX</span><span class="role-tooltip">Garante d'une expérience utilisateur exceptionnelle.</span></span>
+                        <span class="role-tag"><span class="role-ops px-2 py-1 rounded-full">DevOps</span><span class="role-tooltip">Lead sur l'infrastructure, le déploiement et la CI/CD.</span></span>
+                        <span class="role-tag"><span class="role-ops px-2 py-1 rounded-full">Backend</span><span class="role-tooltip">Développement du serveur en Spring Boot.</span></span>
+                    </div>
+                </div>
+                <!-- Bon Rosinard -->
+                <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow">
+                    <img src="https://placehold.co/100x100/10B981/FFFFFF?text=BR" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-slate-200" alt="Bon Rosinard">
+                    <h3 class="text-xl font-bold">Bon Rosinard</h3>
+                    <p class="text-slate-500 mb-3">Congo 🇨🇬</p>
+                    <div class="flex flex-wrap justify-center gap-2 text-xs font-medium">
+                        <span class="role-tag"><span class="role-qa px-2 py-1 rounded-full">QA Lead</span><span class="role-tooltip">Responsable de la qualité et de la stratégie de tests.</span></span>
+                        <span class="role-tag"><span class="role-qa px-2 py-1 rounded-full">Monitoring</span><span class="role-tooltip">Responsable de la surveillance et de l'observabilité de l'application.</span></span>
+                         <span class="role-tag"><span class="role-qa px-2 py-1 rounded-full">DevOps</span><span class="role-tooltip">Gestion de l'infrastructure et du déploiement.</span></span>
+                        <span class="role-tag"><span class="role-qa px-2 py-1 rounded-full">Backend</span><span class="role-tooltip">Développement du serveur en Spring Boot.</span></span>
+                    </div>
+                </div>
+                <!-- Jean Yves Yowane -->
+                <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow">
+                    <img src="https://placehold.co/100x100/F59E0B/FFFFFF?text=JY" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-slate-200" alt="Jean Yves Yowane">
+                    <h3 class="text-xl font-bold">Jean Yves Yowane</h3>
+                    <p class="text-slate-500 mb-3">Centrafrique 🇨🇫</p>
+                    <div class="flex flex-wrap justify-center gap-2 text-xs font-medium">
+                        <span class="role-tag"><span class="role-sec px-2 py-1 rounded-full">Sécurité</span><span class="role-tooltip">Responsable de la conformité et de la sécurité de l'application.</span></span>
+                        <span class="role-tag"><span class="role-sec px-2 py-1 rounded-full">Full Stack</span><span class="role-tooltip">Compétences sur l'ensemble de la stack technique.</span></span>
+                        <span class="role-tag"><span class="role-sec px-2 py-1 rounded-full">Qualité FE</span><span class="role-tooltip">Responsable de la qualité du code frontend.</span></span>
+                        <span class="role-tag"><span class="role-sec px-2 py-1 rounded-full">Flutter</span><span class="role-tooltip">Développement de l'application mobile.</span></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Teranga Section -->
+        <section id="teranga-spirit" class="mb-12 bg-white p-8 rounded-xl shadow-md">
+            <h2 class="text-3xl font-bold mb-4 text-center">📱 V1.0 "TERANGA" - La Base Solide</h2>
+            <div class="text-center max-w-3xl mx-auto">
+                 <h3 class="text-xl font-semibold text-blue-600 mb-2">🏠 L'Esprit Teranga</h3>
+                 <p class="text-slate-600 italic">
+                 On dit souvent que le Sénégal c'est la Teranga - cette façon d'accueillir les gens comme s'ils étaient de la famille. Notre V1.0, c'est pareil. On veut que chaque personne qui ouvre l'app se sente directement à l'aise, comme si elle rentrait chez elle. Pas de complications, pas de stress - juste une app qui marche parfaitement pour organiser ses tontines, point final.
+                 </p>
+            </div>
+        </section>
+
+        <!-- Roadmap Section -->
+        <section id="roadmap">
+            <h2 class="text-3xl font-bold mb-8 text-center">📅 Roadmap de Développement</h2>
+            <div id="timeline-container" class="space-y-8">
+                <!-- Weeks will be injected here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Success Metrics Section -->
+        <section id="metrics" class="my-12">
+            <h2 class="text-3xl font-bold mb-8 text-center">📊 Métriques de Succès</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="font-bold text-lg mb-3 text-blue-600">🎯 Phase 1 (Backend)</h3>
+                    <ul class="space-y-2 text-sm text-slate-700 list-disc list-inside">
+                        <li>100% des endpoints API implémentés</li>
+                        <li>Tests Postman 100% réussis</li>
+                        <li>Performance maxmimum 200ms</li>
+                        <li>Documentation OpenAPI complète</li>
+                        <li>Déploiement stable sur Azure, Azure, Railway, Koyeb, Render etc, Koyeb, Render etc</li>
+                        <li>Intégrations Mobile Money fonctionnelles</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="font-bold text-lg mb-3 text-purple-600">📱 Phase 2 (Frontend)</h3>
+                    <ul class="space-y-2 text-sm text-slate-700 list-disc list-inside">
+                        <li>Application publiée sur Android/iOS</li>
+                        <li>Toutes les fonctionnalités MVP implémentées</li>
+                        <li>0 bugs critiques au lancement</li>
+                        <li>Temps de démarrage maximum 3s</li>
+                        <li>Design responsive 100%</li>
+                        <li>Retours positifs de 5+ beta testeurs</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="font-bold text-lg mb-3 text-emerald-600">🚀 Lancement V1.0</h3>
+                    <ul class="space-y-2 text-sm text-slate-700 list-disc list-inside">
+                        <li>100+ utilisateurs actifs en 30 jours</li>
+                        <li>20+ tontines créées la 1ère semaine</li>
+                        <li>Note App Store > 4.0/5</li>
+                        <li>Temps de réponse support < 24h</li>
+                        <li>Taux de succès des paiements > 95%</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rules & Comms Section -->
+        <section id="rules" class="my-12">
+            <h2 class="text-3xl font-bold mb-8 text-center">📋 Règles & Communication</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="font-bold text-lg mb-3">🕘 Standup Hebdomadaire</h3>
+                    <p class="text-sm text-slate-600 mb-2"><strong>Quand:</strong> Lundi 9h00 GMT</p>
+                    <p class="text-sm text-slate-600"><strong>Format:</strong> Fait / À faire / Bloqueurs.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="font-bold text-lg mb-3">✅ Definition of Done</h3>
+                    <p class="text-sm text-slate-600"><strong>Backend:</strong> Testé, documenté, revu et mergé.</p>
+                     <p class="text-sm text-slate-600"><strong>Frontend:</strong> Mockup validé, testé, revu et mergé.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="font-bold text-lg mb-3">💬 Canaux</h3>
+                    <p class="text-sm text-slate-600"><strong>Discord:</strong> Discussions techniques.</p>
+                     <p class="text-sm text-slate-600"><strong>WhatsApp:</strong> Questions rapides & urgences.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="font-bold text-lg mb-3">🆘 Escalade</h3>
+                    <p class="text-sm text-slate-600"><strong>1. Blocage Tech:</strong> Tag @team sur Discord.</p>
+                     <p class="text-sm text-slate-600"><strong>2. Bug Critique:</strong> Message immédiat sur WhatsApp.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-white mt-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+            <p class="font-bold text-lg mb-2">Construisons la meilleure application de tontine en Afrique !</p>
+            <p class="text-slate-400">Rendez-vous au kick-off le 09 Août 2025.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- DATA ---
+            const roadmap = [
+                {
+                    phase: "Phase 1: Développement Backend",
+                    phaseColor: "bg-blue-500",
+                    items: [
+                        { type: 'week', week: 1, start: "2025-08-09", end: "2025-08-15", title: "Configuration & Modules Principaux", details: `
+                            <h5 class="font-bold mb-2">🏗️ Configuration Projet (Jours 1-2)</h5>
+                            <ul class="list-disc pl-5 space-y-1 text-sm mb-4">
+                                <li>Structure de projet simple par dossiers</li>
+                                <li>Configuration Spring Boot 3.2, PostgreSQL 17, Redis 7</li>
+                                <li>Configuration Logback (compliance RGPD)</li>
+                                <li>Pipeline CI/CD sur GitHub Actions pour Azure, Azure, Azure, Railway, Koyeb, Render etc, Koyeb, Render etc, Koyeb, Render etc.app</li>
+                            </ul>
+                            <h5 class="font-bold mb-2">👤 Module Utilisateur (Jours 3-4)</h5>
+                            <p class="text-sm mb-2">Création des entités, services et endpoints pour l'authentification (OTP, JWT) et la gestion de profil.</p>
+                            <h5 class="font-bold mb-2">🏦 Module Tontine (Jour 5)</h5>
+                            <p class="text-sm">Création des entités, services et endpoints pour le CRUD des tontines et la gestion des participants.</p>
+                        `},
+                        { type: 'pause', start: "2025-08-16", end: "2025-08-25", title: "Pause Mémoire", details: `Période dédiée à la rédaction et la soumission du mémoire. Pas de développement actif.` },
+                        { type: 'week', week: 2, start: "2025-08-26", end: "2025-08-29", title: "Modules Paiement & Tirages", details: `
+                            <h5 class="font-bold mb-2">💳 Module Paiement (Jours 1-3)</h5>
+                            <p class="text-sm mb-4">Endpoints pour initier et suivre les paiements, consulter l'historique, et gérer les webhooks.</p>
+                            <h5 class="font-bold mb-2">🎯 Module Tirages (Jours 4-5)</h5>
+                            <p class="text-sm mb-4">Endpoints pour gérer les tours, effectuer les tirages, et distribuer les gains.</p>
+                        `},
+                        { type: 'pause', start: "2025-08-30", end: "2025-09-10", title: "Pause Mémoire (Suite)", details: `Période dédiée à la finalisation et la soutenance du mémoire. Reprise possible si terminé plus tôt.` },
+                        { type: 'week', week: 3, start: "2025-09-11", end: "2025-09-17", title: "Notifications & Sécurité", details: `
+                            <h5 class="font-bold mb-2">🔔 Module Notifications (Jours 1-2)</h5>
+                            <p class="text-sm mb-4">Endpoints pour la gestion des notifications et des préférences utilisateur.</p>
+                            <h5 class="font-bold mb-2">🔒 Sécurité Renforcée (Jours 3-5)</h5>
+                            <p class="text-sm mb-4">Implémentation du Rate Limiting, Headers de sécurité, Audit Trail et validation des entrées.</p>
+                            <h5 class="font-bold mb-2">📊 Logs & Monitoring (Jours 6-7)</h5>
+                            <p class="text-sm">Mise en place du logging structuré, métriques avec Micrometer et intégration Sentry.</p>
+                        `},
+                        { type: 'week', week: 4, start: "2025-09-18", end: "2025-09-24", title: "Logique Métier & Intégration", details: `
+                            <h5 class="font-bold mb-2">🧮 Moteur de Règles Métier (Jours 1-3)</h5>
+                            <p class="text-sm mb-4">Implémentation de la logique de cycle de vie des tontines, calcul des pénalités, et rappels automatiques.</p>
+                            <h5 class="font-bold mb-2">🔄 Intégration & Events (Jours 4-5)</h5>
+                            <p class="text-sm mb-4">Mise en place d'une communication par événements, gestion des transactions et stratégie de cache.</p>
+                            <h5 class="font-bold mb-2">🧪 Tests Unitaires & Intégration (Jours 6-7)</h5>
+                            <p class="text-sm">Écriture des tests avec un objectif de couverture > 80%.</p>
+                        `},
+                        { type: 'week', week: 5, start: "2025-09-25", end: "2025-10-01", title: "Tests API & Documentation", details: `
+                            <h5 class="font-bold mb-2">🔍 Tests API Complets (Jours 1-4)</h5>
+                            <p class="text-sm mb-4">Création de collections Postman exhaustives pour tous les scénarios et tests de performance basiques.</p>
+                            <h5 class="font-bold mb-2">📚 Documentation API (Jours 5-7)</h5>
+                            <p class="text-sm">Génération d'une spécification OpenAPI 3.0 complète et intégration avec Swagger UI.</p>
+                        `},
+                        { type: 'week', week: 6, start: "2025-10-02", end: "2025-10-10", title: "Déploiement & Optimisation", details: `
+                            <h5 class="font-bold mb-2">🚀 Déploiement Production (Jours 1-3)</h5>
+                            <p class="text-sm mb-4">Configuration de l'environnement de production sur Azure, Azure, Railway, Koyeb, Render etc, Koyeb, Render etc.app.</p>
+                            <h5 class="font-bold mb-2">⚡ Optimisation & Audit (Jours 4-7)</h5>
+                            <p class="text-sm">Optimisation des index et requêtes, affinage du cache, et audit de sécurité (OWASP).</p>
+                        `}
+                    ]
+                },
+                {
+                    phase: "Phase 2: Développement Frontend",
+                    phaseColor: "bg-purple-500",
+                    items: [
+                        { type: 'week', week: 7, start: "2025-10-11", end: "2025-10-17", title: "Setup Flutter & Auth", details: `
+                             <h5 class="font-bold mb-2">📱 Setup Projet Flutter (Jours 1-2)</h5>
+                             <p class="text-sm mb-4">Mise en place de l'architecture Clean Architecture avec GetX CLI, gestion des dépendances.</p>
+                             <h5 class="font-bold mb-2">🔐 UI Authentification (Jours 3-5)</h5>
+                             <p class="text-sm mb-4">Création des écrans de login (OTP), inscription, et gestion de profil. Stockage sécurisé du token JWT.</p>
+                             <h5 class="font-bold mb-2">🎨 Design System (Jours 6-7)</h5>
+                             <p class="text-sm">Définition du UI Kit, création des widgets réutilisables, et support des thèmes clair/sombre.</p>
+                        `},
+                        { type: 'week', week: 8, start: "2025-10-18", end: "2025-10-24", title: "UI des Tontines", details: `
+                            <h5 class="font-bold mb-2">🏦 Gestion des Tontines (Jours 1-4)</h5>
+                            <p class="text-sm mb-4">Écrans pour lister, créer, et voir les détails d'une tontine. Flux pour rejoindre et inviter.</p>
+                            <h5 class="font-bold mb-2">📊 Tableau de Bord Principal (Jours 5-7)</h5>
+                            <p class="text-sm">Création de la page d'accueil avec vue d'ensemble, cartes visuelles, et actions rapides.</p>
+                        `},
+                        { type: 'week', week: 9, start: "2025-10-25", end: "2025-10-31", title: "Paiements & Mobile Money", details: `
+                            <h5 class="font-bold mb-2">💳 Intégration des Paiements (Jours 1-4)</h5>
+                            <p class="text-sm mb-4">Flux de paiement complet, sélection de la méthode, historique et gestion des erreurs.</p>
+                            <h5 class="font-bold mb-2">📱 UX Mobile Money (Jours 5-7)</h5>
+                            <p class="text-sm">Intégration via deep linking, callbacks de confirmation et génération de reçus.</p>
+                        `},
+                        { type: 'week', week: 10, start: "2025-11-01", end: "2025-11-07", title: "Tirages & Notifications", details: `
+                            <h5 class="font-bold mb-2">🎯 UI Tirages/Rounds (Jours 1-3)</h5>
+                            <p class="text-sm mb-4">Vue calendrier, interface pour lancer les tirages, et écrans d'annonce des gagnants.</p>
+                            <h5 class="font-bold mb-2">🔔 Système de Notifications (Jours 4-6)</h5>
+                            <p class="text-sm mb-4">Intégration Push (FCM), centre de notifications in-app, et écran de préférences.</p>
+                        `},
+                        { type: 'week', week: 11, start: "2025-11-08", end: "2025-11-14", title: "Finition & Optimisation", details: `
+                            <h5 class="font-bold mb-2">⚡ Optimisation des Performances (Jours 1-3)</h5>
+                            <p class="text-sm mb-4">Lazy loading, optimisation des images, réduction du bundle. Objectif de démarrage < 2s.</p>
+                            <h5 class="font-bold mb-2">🎨 Finition UI/UX (Jours 4-6)</h5>
+                            <p class="text-sm mb-4">Ajout d'animations, loading states, et écrans d'erreur/vides pertinents.</p>
+                        `},
+                        { type: 'week', week: 12, start: "2025-11-15", end: "2025-11-22", title: "Déploiement sur les Stores", details: `
+                            <h5 class="font-bold mb-2">📱 Préparation pour les Stores (Jours 1-3)</h5>
+                            <p class="text-sm mb-4">Création des assets, rédaction des descriptions, et configuration sur App Store & Google Play.</p>
+                            <h5 class="font-bold mb-2">🚀 Préparation au Lancement (Jours 4-5)</h5>
+                            <p class="text-sm mb-4">Mise en place du Beta testing, Crashlytics et Analytics.</p>
+                            <h5 class="font-bold mb-2">🎯 Jour du Lancement (Jours 6-7)</h5>
+                            <p class="text-sm">Soumission aux stores et communication.</p>
+                        `}
+                    ]
+                }
+            ];
+
+            const container = document.getElementById('timeline-container');
+            const today = new Date();
+            // Pour la démo, on peut fixer une date pour voir l'effet
+            // const today = new Date('2025-08-20'); 
+
+            const dateElement = document.getElementById('current-date').querySelector('p:first-child');
+            dateElement.textContent = today.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            roadmap.forEach(phaseData => {
+                const phaseHeader = document.createElement('div');
+                phaseHeader.className = 'flex items-center gap-4 mb-4';
+                phaseHeader.innerHTML = `
+                    <span class="flex-shrink-0 w-3 h-3 ${phaseData.phaseColor} rounded-full"></span>
+                    <div class="w-full h-px bg-slate-200"></div>
+                    <h3 class="flex-shrink-0 text-xl font-semibold text-slate-700">${phaseData.phase}</h3>
+                    <div class="w-full h-px bg-slate-200"></div>
+                `;
+                container.appendChild(phaseHeader);
+
+                phaseData.items.forEach(itemData => {
+                    const startDate = new Date(itemData.start);
+                    const endDate = new Date(itemData.end);
+                    startDate.setHours(0, 0, 0, 0);
+                    endDate.setHours(23, 59, 59, 999);
+
+                    const isCurrent = today >= startDate && today <= endDate;
+                    const isPast = today > endDate;
+
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'timeline-item relative pl-10';
+                    
+                    let indicatorContent, statusIcon, statusColor, statusText, detailsClass;
+
+                    if(itemData.type === 'week') {
+                        indicatorContent = itemData.week;
+                        detailsClass = isCurrent ? 'active-week' : '';
+                        if (isCurrent) {
+                            statusIcon = `<svg class="w-6 h-6 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+                            statusColor = 'text-blue-600';
+                            statusText = 'En cours';
+                        } else if (isPast) {
+                            statusIcon = `<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>`;
+                            statusColor = 'text-green-500';
+                            statusText = 'Terminé';
+                        } else {
+                            statusIcon = `<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0h18M-4.5 12h27" /></svg>`;
+                            statusColor = 'text-slate-400';
+                            statusText = 'À venir';
+                        }
+                    } else { // Pause
+                        indicatorContent = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1zM9 9a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1zM9 13a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd" /></svg>`;
+                        detailsClass = 'pause-week';
+                         if (isCurrent) {
+                            statusIcon = `<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9v6m-4.5 0V9M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+                            statusColor = 'text-slate-600';
+                            statusText = 'En pause';
+                        } else if (isPast) {
+                            statusIcon = `<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>`;
+                            statusColor = 'text-green-500';
+                            statusText = 'Terminé';
+                        } else {
+                            statusIcon = `<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0h18M-4.5 12h27" /></svg>`;
+                            statusColor = 'text-slate-400';
+                            statusText = 'À venir';
+                        }
+                    }
+
+                    itemElement.innerHTML = `
+                        <div class="absolute left-0 top-0 w-10 h-10 week-indicator rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm transform -translate-x-1/2 ring-8 ring-slate-50">
+                            ${indicatorContent}
+                        </div>
+                        <details class="bg-white rounded-xl shadow-md transition-all ${detailsClass}" ${isCurrent ? 'open' : ''}>
+                            <summary class="p-6">
+                                <div class="flex flex-col sm:flex-row justify-between sm:items-center">
+                                    <div class="flex-grow">
+                                        <p class="text-sm text-slate-500">${startDate.toLocaleDateString('fr-FR', {day: '2-digit', month: 'short'})} - ${endDate.toLocaleDateString('fr-FR', {day: '2-digit', month: 'short', year: 'numeric'})}</p>
+                                        <h4 class="text-xl font-bold text-slate-800">${itemData.title}</h4>
+                                    </div>
+                                    <div class="flex items-center gap-2 mt-2 sm:mt-0 flex-shrink-0">
+                                        <div class="flex items-center gap-2 ${statusColor}">
+                                            ${statusIcon}
+                                            <span class="font-semibold">${statusText}</span>
+                                        </div>
+                                        <div class="arrow ml-4 text-slate-400">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </summary>
+                            <div class="px-6 pb-6 border-t border-slate-200 text-slate-700">
+                                ${itemData.details}
+                            </div>
+                        </details>
+                    `;
+                    container.appendChild(itemElement);
+
+                    if (isCurrent) {
+                        setTimeout(() => {
+                            itemElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 300);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
