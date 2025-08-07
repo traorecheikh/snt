@@ -5,55 +5,196 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SunuTontine V1.0 "TERANGA" - Roadmap Interactive</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* slate-50 */
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
         }
+        
+        /* Timeline Styles */
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: 1.25rem; /* left-5 */
-            top: 1.25rem; /* top-5 */
-            bottom: -1.25rem; /* -bottom-5 */
+            left: 1.25rem;
+            top: 1.25rem;
+            bottom: -1.25rem;
             width: 2px;
-            background-color: #e2e8f0; /* slate-200 */
+            background-color: #e2e8f0;
             transform: translateX(-50%);
         }
         .timeline-item:last-child::before {
             display: none;
         }
         .active-week {
-            border: 2px solid #2563eb; /* blue-600 */
+            border: 2px solid #2563eb;
             box-shadow: 0 10px 15px -3px rgb(37 99 235 / 0.2), 0 4px 6px -4px rgb(37 99 235 / 0.2);
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
         }
         .active-week .week-indicator {
-            background-color: #2563eb; /* blue-600 */
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: white;
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
         }
         .pause-week {
-            border: 2px dashed #64748b; /* slate-500 */
+            border: 2px dashed #64748b;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
         }
         .pause-week .week-indicator {
-             background-color: #64748b; /* slate-500 */
-             color: white;
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            color: white;
         }
-        details summary {
-            list-style: none;
-            cursor: pointer;
+        
+        /* Tab System */
+        .tab-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        details summary::-webkit-details-marker {
-            display: none;
+        
+        .tab-button {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
         }
-        details summary .arrow {
-            transition: transform 0.2s;
+        
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
         }
-        details[open] summary .arrow {
-            transform: rotate(90deg);
+        
+        .tab-button:hover::before {
+            left: 100%;
         }
+        
+        .tab-button.active {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .tab-content {
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Version Cards */
+        .version-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .version-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2563eb, #7c3aed, #dc2626, #059669);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .version-card:hover::before {
+            opacity: 1;
+        }
+        
+        .version-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+        }
+        
+        .feature-badge {
+            background: rgba(37, 99, 235, 0.1);
+            color: #2563eb;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .feature-badge:hover {
+            background: rgba(37, 99, 235, 0.2);
+            transform: scale(1.05);
+        }
+        
+        /* Status Badges */
+        .status-current {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-planned {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+        
+        .status-concept {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+        
+        .status-vision {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+        
+        /* Team Cards */
+        .team-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .team-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        }
+        
+        /* Role Tags */
         .role-tag {
             position: relative;
             cursor: pointer;
@@ -61,7 +202,7 @@
         .role-tooltip {
             visibility: hidden;
             width: 220px;
-            background-color: #1e293b; /* slate-800 */
+            background-color: #1e293b;
             color: #fff;
             text-align: center;
             border-radius: 6px;
@@ -90,21 +231,138 @@
             visibility: visible;
             opacity: 1;
         }
-        .role-pm { background-color: #eef2ff; color: #4338ca; } /* indigo */
-        .role-ops { background-color: #fdf2f8; color: #be185d; } /* pink */
-        .role-qa { background-color: #ecfdf5; color: #047857; } /* emerald */
-        .role-sec { background-color: #fffbeb; color: #b45309; } /* amber */
+        .role-pm { background-color: #eef2ff; color: #4338ca; }
+        .role-ops { background-color: #fdf2f8; color: #be185d; }
+        .role-qa { background-color: #ecfdf5; color: #047857; }
+        .role-sec { background-color: #fffbeb; color: #b45309; }
+        
+        /* Details */
+        details summary {
+            list-style: none;
+            cursor: pointer;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        details summary .arrow {
+            transition: transform 0.2s;
+        }
+        details[open] summary .arrow {
+            transform: rotate(90deg);
+        }
+        
+        /* Glass morphism effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+        }
+    </style>
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            z-index: 100;
+            overflow-y: auto;
+        }
+        
+        .version-sidebar.open {
+            right: 0;
+        }
+        
+        .version-sidebar-toggle {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: #2563eb;
+            color: white;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 101;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .version-sidebar-toggle:hover {
+            background: #1d4ed8;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .version-card {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .version-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .version-current {
+            border-color: #2563eb;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        }
+        
+        .version-coming-soon {
+            opacity: 0.8;
+        }
+        
+        .version-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .version-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
     </style>
 </head>
 <body class="text-slate-800">
 
     <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-20">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <header class="glass sticky top-0 z-20 border-b">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div class="flex justify-between items-center">
-                <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">
-                    🚀 <span class="text-blue-600">Sunu</span>Tontine <span class="text-sm font-medium text-slate-500">V1.0 "TERANGA"</span>
-                </h1>
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg">
+                        🚀
+                    </div>
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                            <span class="text-slate-900">Sunu</span>Tontine
+                        </h1>
+                        <p class="text-sm font-medium text-slate-500">Roadmap Interactif - Teranga à Legacy</p>
+                    </div>
+                </div>
                 <div id="current-date" class="hidden md:block text-right">
                     <p class="font-semibold text-slate-700"></p>
                     <p class="text-sm text-slate-500">La Qualité avant la Quantité</p>
@@ -116,12 +374,12 @@
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
 
         <!-- Team Section -->
-        <section id="team" class="mb-12">
-            <h2 class="text-3xl font-bold mb-6 text-center">L'Équipe Fondatrice</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <section id="team" class="mb-16">
+            <h2 class="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">L'Équipe Fondatrice</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Cheikh Tidiane -->
-                <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow">
-                    <img src="https://placehold.co/100x100/4F46E5/FFFFFF?text=CT" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-slate-200" alt="Cheikh Tidiane">
+                <div class="team-card p-6 text-center">
+                    <img src="https://placehold.co/100x100/4F46E5/FFFFFF?text=CT" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-blue-200 shadow-lg" alt="Cheikh Tidiane">
                     <h3 class="text-xl font-bold">Cheikh Tidiane</h3>
                     <p class="text-slate-500 mb-3">Sénégal 🇸🇳</p>
                     <div class="flex flex-wrap justify-center gap-2 text-xs font-medium">
@@ -132,8 +390,8 @@
                     </div>
                 </div>
                 <!-- Houleymatou Diallo -->
-                <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow">
-                    <img src="https://placehold.co/100x100/D946EF/FFFFFF?text=HD" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-slate-200" alt="Houleymatou Diallo">
+                <div class="team-card p-6 text-center">
+                    <img src="https://placehold.co/100x100/D946EF/FFFFFF?text=HD" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-pink-200 shadow-lg" alt="Houleymatou Diallo">
                     <h3 class="text-xl font-bold">Houleymatou Diallo</h3>
                     <p class="text-slate-500 mb-3">Sénégal 🇸🇳</p>
                     <div class="flex flex-wrap justify-center gap-2 text-xs font-medium">
@@ -144,20 +402,20 @@
                     </div>
                 </div>
                 <!-- Bon Rosinard -->
-                <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow">
-                    <img src="https://placehold.co/100x100/10B981/FFFFFF?text=BR" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-slate-200" alt="Bon Rosinard">
+                <div class="team-card p-6 text-center">
+                    <img src="https://placehold.co/100x100/10B981/FFFFFF?text=BR" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-green-200 shadow-lg" alt="Bon Rosinard">
                     <h3 class="text-xl font-bold">Bon Rosinard</h3>
                     <p class="text-slate-500 mb-3">Congo 🇨🇬</p>
                     <div class="flex flex-wrap justify-center gap-2 text-xs font-medium">
                         <span class="role-tag"><span class="role-qa px-2 py-1 rounded-full">QA Lead</span><span class="role-tooltip">Responsable de la qualité et de la stratégie de tests.</span></span>
                         <span class="role-tag"><span class="role-qa px-2 py-1 rounded-full">Monitoring</span><span class="role-tooltip">Responsable de la surveillance et de l'observabilité de l'application.</span></span>
-                         <span class="role-tag"><span class="role-qa px-2 py-1 rounded-full">DevOps</span><span class="role-tooltip">Gestion de l'infrastructure et du déploiement.</span></span>
+                        <span class="role-tag"><span class="role-qa px-2 py-1 rounded-full">DevOps</span><span class="role-tooltip">Gestion de l'infrastructure et du déploiement.</span></span>
                         <span class="role-tag"><span class="role-qa px-2 py-1 rounded-full">Backend</span><span class="role-tooltip">Développement du serveur en Spring Boot.</span></span>
                     </div>
                 </div>
                 <!-- Jean Yves Yowane -->
-                <div class="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow">
-                    <img src="https://placehold.co/100x100/F59E0B/FFFFFF?text=JY" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-slate-200" alt="Jean Yves Yowane">
+                <div class="team-card p-6 text-center">
+                    <img src="https://placehold.co/100x100/F59E0B/FFFFFF?text=JY" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-yellow-200 shadow-lg" alt="Jean Yves Yowane">
                     <h3 class="text-xl font-bold">Jean Yves Yowane</h3>
                     <p class="text-slate-500 mb-3">Centrafrique 🇨🇫</p>
                     <div class="flex flex-wrap justify-center gap-2 text-xs font-medium">
@@ -169,118 +427,764 @@
                 </div>
             </div>
         </section>
-        
-        <!-- Teranga Section -->
-        <section id="teranga-spirit" class="mb-12 bg-white p-8 rounded-xl shadow-md">
-            <h2 class="text-3xl font-bold mb-4 text-center">📱 V1.0 "TERANGA" - La Base Solide</h2>
-            <div class="text-center max-w-3xl mx-auto">
-                 <h3 class="text-xl font-semibold text-blue-600 mb-2">🏠 L'Esprit Teranga</h3>
-                 <p class="text-slate-600 italic">
-                 On dit souvent que le Sénégal c'est la Teranga - cette façon d'accueillir les gens comme s'ils étaient de la famille. Notre V1.0, c'est pareil. On veut que chaque personne qui ouvre l'app se sente directement à l'aise, comme si elle rentrait chez elle. Pas de complications, pas de stress - juste une app qui marche parfaitement pour organiser ses tontines, point final.
-                 </p>
-            </div>
-        </section>
 
-        <!-- Roadmap Section -->
-        <section id="roadmap">
-            <h2 class="text-3xl font-bold mb-8 text-center">📅 Roadmap de Développement</h2>
-            <div id="timeline-container" class="space-y-8">
-                <!-- Weeks will be injected here by JavaScript -->
+        <!-- Main Tab Container -->
+        <section class="tab-container mb-16">
+            <!-- Tab Navigation -->
+            <div class="p-6 border-b border-slate-200">
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <button class="tab-button active px-6 py-3 font-semibold text-sm bg-slate-100 text-slate-700" data-tab="roadmap">
+                        <i data-lucide="calendar" class="w-4 h-4 inline mr-2"></i>
+                        Roadmap V1.0
+                    </button>
+                    <button class="tab-button px-6 py-3 font-semibold text-sm bg-slate-100 text-slate-700" data-tab="versions">
+                        <i data-lucide="layers" class="w-4 h-4 inline mr-2"></i>
+                        Toutes les Versions
+                    </button>
+                    <button class="tab-button px-6 py-3 font-semibold text-sm bg-slate-100 text-slate-700" data-tab="features">
+                        <i data-lucide="star" class="w-4 h-4 inline mr-2"></i>
+                        Fonctionnalités V1.0
+                    </button>
+                    <button class="tab-button px-6 py-3 font-semibold text-sm bg-slate-100 text-slate-700" data-tab="metrics">
+                        <i data-lucide="bar-chart-3" class="w-4 h-4 inline mr-2"></i>
+                        Métriques & Objectifs
+                    </button>
+                </div>
+                <p class="text-sm text-slate-600">Explorez le développement de SunuTontine de Teranga à Legacy</p>
             </div>
-        </section>
 
-        <!-- Success Metrics Section -->
-        <section id="metrics" class="my-12">
-            <h2 class="text-3xl font-bold mb-8 text-center">📊 Métriques de Succès</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="font-bold text-lg mb-3 text-blue-600">🎯 Phase 1 (Backend)</h3>
-                    <ul class="space-y-2 text-sm text-slate-700 list-disc list-inside">
-                        <li>100% des endpoints API implémentés</li>
-                        <li>Couverture tests >80%</li>
-                        <li>Performance <200ms en staging</li>
-                        <li>Documentation OpenAPI complète</li>
-                        <li>Audit sécurité OWASP réussi</li>
-                        <li>Infrastructure production déployée</li>
-                        <li>Monitoring et alerting fonctionnels</li>
-                    </ul>
+            <!-- Tab Contents -->
+            <div class="p-6">
+                <!-- Roadmap Tab Content -->
+                <div class="tab-content" data-content="roadmap">
+                    <div class="mb-8">
+                        <h2 class="text-3xl font-bold mb-4 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                            📅 Roadmap V1.0 "TERANGA"
+                        </h2>
+                        <div class="text-center max-w-3xl mx-auto mb-8">
+                            <div class="glass p-6 rounded-xl">
+                                <h3 class="text-xl font-semibold text-blue-600 mb-2">🏠 L'Esprit Teranga</h3>
+                                <p class="text-slate-600 italic">
+                                    On dit souvent que le Sénégal c'est la Teranga - cette façon d'accueillir les gens comme s'ils étaient de la famille. Notre V1.0, c'est pareil. On veut que chaque personne qui ouvre l'app se sente directement à l'aise, comme si elle rentrait chez elle. Pas de complications, pas de stress - juste une app qui marche parfaitement pour organiser ses tontines, point final.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="timeline-container" class="space-y-8">
+                        <!-- Timeline will be injected here by JavaScript -->
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="font-bold text-lg mb-3 text-purple-600">📱 Phase 2 (Frontend)</h3>
-                    <ul class="space-y-2 text-sm text-slate-700 list-disc list-inside">
-                        <li>Application validée par les stores</li>
-                        <li>20+ beta testeurs satisfaits</li>
-                        <li>Temps de démarrage <3s</li>
-                        <li>0 bugs critiques détectés</li>
-                        <li>Design responsive 100%</li>
-                        <li>Tests automatisés E2E</li>
-                        <li>Conformité RGPD validée</li>
-                    </ul>
+                <!-- Versions Tab Content -->
+                <div class="tab-content hidden" data-content="versions">
+                    <h2 class="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        🚀 Évolution SunuTontine - Teranga à Legacy
+                    </h2>
+                    <div id="versions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Versions will be injected here -->
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="font-bold text-lg mb-3 text-emerald-600">🚀 Phase 3 (Post-Launch)</h3>
-                    <ul class="space-y-2 text-sm text-slate-700 list-disc list-inside">
-                        <li>Lancement sans incident majeur</li>
-                        <li>Uptime >99.5% première semaine</li>
-                        <li>Temps de réponse support <2h</li>
-                        <li>Métriques en temps réel actives</li>
-                        <li>Plan de correction automatique</li>
-                        <li>Feedback utilisateur collecté</li>
-                    </ul>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="font-bold text-lg mb-3 text-amber-600">🎯 Objectifs Business</h3>
-                    <ul class="space-y-2 text-sm text-slate-700 list-disc list-inside">
-                        <li>100+ utilisateurs actifs M+1</li>
-                        <li>20+ tontines créées S+1</li>
-                        <li>Note App Store >4.0/5</li>
-                        <li>Taux de succès paiements >95%</li>
-                        <li>Taux de rétention >60% S+2</li>
-                        <li>NPS >50 sur les 3 premiers mois</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
 
-        <!-- Rules & Comms Section -->
-        <section id="rules" class="my-12">
-            <h2 class="text-3xl font-bold mb-8 text-center">📋 Règles & Communication</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="font-bold text-lg mb-3">🕘 Standup Hebdomadaire</h3>
-                    <p class="text-sm text-slate-600 mb-2"><strong>Quand:</strong> Lundi 9h00 GMT</p>
-                    <p class="text-sm text-slate-600"><strong>Format:</strong> Fait / À faire / Bloqueurs.</p>
+                <!-- Features Tab Content -->
+                <div class="tab-content hidden" data-content="features">
+                    <h2 class="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        ✨ Fonctionnalités V1.0 "TERANGA"
+                    </h2>
+                    
+                    <!-- Core Features Section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                        <div class="version-card p-6">
+                            <h3 class="text-xl font-bold mb-4 text-blue-600">🔑 Fonctionnalités MVP Essentielles</h3>
+                            <div class="space-y-3">
+                                <div class="feature-badge">🔐 Authentification OTP sécurisée</div>
+                                <div class="feature-badge">🏦 Création et gestion des tontines</div>
+                                <div class="feature-badge">👥 Invitation et gestion des participants</div>
+                                <div class="feature-badge">💳 Paiements Mobile Money intégrés</div>
+                                <div class="feature-badge">🎯 Système de tirages automatiques</div>
+                                <div class="feature-badge">🔔 Notifications push intelligentes</div>
+                                <div class="feature-badge">📊 Tableau de bord avec pot visuel</div>
+                                <div class="feature-badge">🛡️ Sécurité RGPD et conformité</div>
+                            </div>
+                        </div>
+                        
+                        <div class="version-card p-6">
+                            <h3 class="text-xl font-bold mb-4 text-purple-600">🏺 Innovation: Pot Visuel Interactif</h3>
+                            <div class="bg-gradient-to-br from-blue-50 to-purple-50 p-4 rounded-lg mb-4">
+                                <div class="text-center mb-3">
+                                    <div class="text-2xl">🏺</div>
+                                    <div class="text-sm text-slate-600">15,000 / 25,000 FCFA</div>
+                                    <div class="w-full bg-slate-200 rounded-full h-2 mt-2">
+                                        <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full" style="width: 60%"></div>
+                                    </div>
+                                    <div class="text-xs text-slate-500 mt-1">60% - Bientôt prêt!</div>
+                                </div>
+                            </div>
+                            <ul class="text-sm space-y-2">
+                                <li>💧 Animations de remplissage progressif</li>
+                                <li>⚡ Notifications visuelles temps réel</li>
+                                <li>🎉 Célébrations automatiques à 100%</li>
+                                <li>🔥 Alertes visuelles pour retards</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Features -->
+                    <div class="space-y-6">
+                        <div class="version-card p-6">
+                            <h4 class="text-lg font-bold mb-3 text-emerald-600">1. 🏦 Création de Tontine COMPLÈTE</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                                <div class="space-y-2">
+                                    <h5 class="font-semibold">📝 Configuration Basique</h5>
+                                    <ul class="text-slate-600 space-y-1">
+                                        <li>• Nom et description</li>
+                                        <li>• Photo/avatar tontine</li>
+                                        <li>• Règles personnalisées</li>
+                                    </ul>
+                                </div>
+                                <div class="space-y-2">
+                                    <h5 class="font-semibold">💰 Configuration Financière</h5>
+                                    <ul class="text-slate-600 space-y-1">
+                                        <li>• Montant fixe/variable</li>
+                                        <li>• Devise (FCFA défaut)</li>
+                                        <li>• Pénalités configurables</li>
+                                        <li>• Bonus ponctualité</li>
+                                    </ul>
+                                </div>
+                                <div class="space-y-2">
+                                    <h5 class="font-semibold">👥 Configuration Membres</h5>
+                                    <ul class="text-slate-600 space-y-1">
+                                        <li>• 2-50 participants</li>
+                                        <li>• Validation auto/manuelle</li>
+                                        <li>• Rôles (admin, co-admin)</li>
+                                    </ul>
+                                </div>
+                                <div class="space-y-2">
+                                    <h5 class="font-semibold">🎯 Ordre Distribution</h5>
+                                    <ul class="text-slate-600 space-y-1">
+                                        <li>• Fixe (ordre défini)</li>
+                                        <li>• Aléatoire (tirage auto)</li>
+                                        <li>• Mérite (performance)</li>
+                                        <li>• Hybride (mix méthodes)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="version-card p-6">
+                            <h4 class="text-lg font-bold mb-3 text-amber-600">2. 📱 Paiement Direct Integration</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="bg-orange-50 p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-2">🟠 Orange Money</h5>
+                                    <p class="text-sm text-slate-600">Intégration native API Orange Money pour paiements instantanés</p>
+                                </div>
+                                <div class="bg-blue-50 p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-2">🌊 Wave</h5>
+                                    <p class="text-sm text-slate-600">Paiements sécurisés via Wave avec confirmations automatiques</p>
+                                </div>
+                                <div class="bg-green-50 p-4 rounded-lg">
+                                    <h5 class="font-semibold mb-2">💳 Autres Opérateurs</h5>
+                                    <p class="text-sm text-slate-600">Support extensible pour Free Money, etc.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="version-card p-6">
+                            <h4 class="text-lg font-bold mb-3 text-red-600">🚫 Exclu de V1.0 (Focus MVP)</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <h5 class="font-semibold mb-2 text-slate-700">Reporté à V2.0+</h5>
+                                    <ul class="text-slate-500 space-y-1">
+                                        <li>❌ Chat et fonctionnalités sociales</li>
+                                        <li>❌ Analytics avancées</li>
+                                        <li>❌ Support multi-langues (seulement français)</li>
+                                        <li>❌ Marketplace et SunuPoints</li>
+                                        <li>❌ Commandes vocales</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold mb-2 text-slate-700">Limitation MVP</h5>
+                                    <ul class="text-slate-500 space-y-1">
+                                        <li>📝 Maximum 1 tontine par utilisateur</li>
+                                        <li>🌍 Sénégal uniquement (test marché)</li>
+                                        <li>📱 Mobile-first (pas de web)</li>
+                                        <li>🔒 Fonctionnalités de base uniquement</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                 <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="font-bold text-lg mb-3">✅ Definition of Done</h3>
-                    <p class="text-sm text-slate-600"><strong>Backend:</strong> Testé, documenté, revu et mergé.</p>
-                     <p class="text-sm text-slate-600"><strong>Frontend:</strong> Mockup validé, testé, revu et mergé.</p>
-                </div>
-                 <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="font-bold text-lg mb-3">💬 Canaux</h3>
-                    <p class="text-sm text-slate-600"><strong>404 Not Found:</strong> Discussions techniques.</p>
-                     <p class="text-sm text-slate-600"><strong>WhatsApp:</strong> Questions rapides & urgences.</p>
-                </div>
-                 <div class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="font-bold text-lg mb-3">🆘 Escalade</h3>
-                    <p class="text-sm text-slate-600"><strong>1. Blocage Tech:</strong> Tag @team sur 404 Not Found.</p>
-                     <p class="text-sm text-slate-600"><strong>2. Bug Critique:</strong> Message immédiat sur WhatsApp.</p>
+
+                <!-- Metrics Tab Content -->
+                <div class="tab-content hidden" data-content="metrics">
+                    <h2 class="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        📊 Métriques de Succès & Objectifs
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                        <div class="version-card p-6">
+                            <h3 class="font-bold text-lg mb-3 text-blue-600">🎯 Phase 1 (Backend)</h3>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>100% endpoints API implémentés</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Couverture tests >80%</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Performance <200ms staging</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Documentation OpenAPI complète</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Audit sécurité OWASP validé</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Infrastructure production prête</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Monitoring et alerting actifs</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="version-card p-6">
+                            <h3 class="font-bold text-lg mb-3 text-purple-600">📱 Phase 2 (Frontend)</h3>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>Apps validées par stores</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>20+ beta testeurs satisfaits</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>Temps démarrage <3s</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>0 bugs critiques détectés</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>Design responsive 100%</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>Tests automatisés E2E</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>Conformité RGPD validée</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="version-card p-6">
+                            <h3 class="font-bold text-lg mb-3 text-emerald-600">🚀 Phase 3 (Post-Launch)</h3>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li class="flex items-center"><span class="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>Lancement sans incident majeur</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>Uptime >99.5% première semaine</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>Support <2h temps réponse</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>Métriques temps réel actives</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>Plan correction automatique</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>Feedback utilisateur collecté</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="version-card p-6">
+                            <h3 class="font-bold text-lg mb-3 text-amber-600">🎯 Objectifs Business</h3>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li class="flex items-center"><span class="w-2 h-2 bg-amber-500 rounded-full mr-2"></span>100+ utilisateurs actifs M+1</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-amber-500 rounded-full mr-2"></span>20+ tontines créées S+1</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-amber-500 rounded-full mr-2"></span>Note App Store >4.0/5</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-amber-500 rounded-full mr-2"></span>Taux succès paiements >95%</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-amber-500 rounded-full mr-2"></span>Taux rétention >60% S+2</li>
+                                <li class="flex items-center"><span class="w-2 h-2 bg-amber-500 rounded-full mr-2"></span>NPS >50 sur 3 premiers mois</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Communication Rules -->
+                    <div class="version-card p-6">
+                        <h3 class="text-2xl font-bold mb-6 text-center text-slate-800">📋 Règles & Communication</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg">
+                                <h4 class="font-bold text-blue-800 mb-2">🕘 Standup Hebdomadaire</h4>
+                                <p class="text-sm text-blue-700 mb-1"><strong>Quand:</strong> Lundi 9h00 GMT</p>
+                                <p class="text-sm text-blue-700"><strong>Format:</strong> Fait / À faire / Bloqueurs</p>
+                            </div>
+                            <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg">
+                                <h4 class="font-bold text-green-800 mb-2">✅ Definition of Done</h4>
+                                <p class="text-sm text-green-700 mb-1"><strong>Backend:</strong> Testé, documenté, revu, mergé</p>
+                                <p class="text-sm text-green-700"><strong>Frontend:</strong> Mockup validé, testé, revu, mergé</p>
+                            </div>
+                            <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg">
+                                <h4 class="font-bold text-purple-800 mb-2">💬 Canaux</h4>
+                                <p class="text-sm text-purple-700 mb-1"><strong>404 Not Found:</strong> Discussions techniques</p>
+                                <p class="text-sm text-purple-700"><strong>WhatsApp:</strong> Questions rapides & urgences</p>
+                            </div>
+                            <div class="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-lg">
+                                <h4 class="font-bold text-red-800 mb-2">🆘 Escalade</h4>
+                                <p class="text-sm text-red-700 mb-1"><strong>1. Blocage Tech:</strong> Tag @team sur 404</p>
+                                <p class="text-sm text-red-700"><strong>2. Bug Critique:</strong> Message WhatsApp immédiat</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <footer class="bg-slate-800 text-white mt-12">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
-            <p class="font-bold text-lg mb-2">Construisons la meilleure application de tontine en Afrique !</p>
-            <p class="text-slate-400">Rendez-vous au kick-off le 10 Août 2025.</p>
+    <footer class="glass mt-16 border-t">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+            <div class="max-w-2xl mx-auto">
+                <div class="flex justify-center items-center space-x-4 mb-6">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                        🚀
+                    </div>
+                    <div class="text-left">
+                        <h3 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">SunuTontine</h3>
+                        <p class="text-slate-600">De Teranga à Legacy</p>
+                    </div>
+                </div>
+                <p class="font-bold text-lg mb-2 text-slate-800">Construisons la meilleure application de tontine en Afrique !</p>
+                <p class="text-slate-600">Rendez-vous au kick-off le 10 Août 2025.</p>
+                <div class="mt-6 flex justify-center space-x-4">
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">🇸🇳 Teranga</span>
+                    <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">🤝 Ubuntu</span>
+                    <span class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-sm font-medium">👑 Legacy</span>
+                </div>
+            </div>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- DATA ---
+            // Initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
+            // --- UPDATED VERSION ROADMAP DATA ---
+            const versions = [
+                {
+                    version: "V1.0",
+                    codename: "TERANGA",
+                    theme: "🏠 L'Hospitalité",
+                    period: "Août 2025 - Janvier 2026",
+                    status: "current",
+                    description: "La base solide et accueillante comme l'esprit sénégalais",
+                    color: "from-blue-500 to-blue-600",
+                    features: [
+                        "🔐 Authentification OTP sécurisée",
+                        "🏦 Création et gestion des tontines complètes",
+                        "👥 Invitation et gestion des participants",
+                        "💳 Paiements Mobile Money (Orange, Wave)",
+                        "🎯 Système de tirages automatiques",
+                        "🔔 Notifications push intelligentes",
+                        "📊 Tableau de bord avec pot visuel interactif",
+                        "🛡️ Sécurité RGPD et conformité",
+                        "📱 Application mobile Android/iOS",
+                        "🌐 Backend API REST complet"
+                    ],
+                    technicalGoals: [
+                        "🎯 100+ utilisateurs actifs premier mois",
+                        "⚡ Performance < 200ms",
+                        "🔒 Audit sécurité OWASP validé",
+                        "📈 Uptime > 99.5%",
+                        "⭐ Note stores > 4.0/5"
+                    ]
+                },
+                {
+                    version: "V1.5",
+                    codename: "POLISH",
+                    theme: "🎨 Le Perfectionnement",
+                    period: "Février - Mai 2026",
+                    status: "planned",
+                    description: "Perfectionner et polir l'expérience utilisateur",
+                    color: "from-indigo-500 to-purple-600",
+                    features: [
+                        "🗣️ Commandes vocales en Wolof",
+                        "📱 Mode hors ligne pour consultation",
+                        "🔔 Notifications améliorées personnalisables",
+                        "📊 Analytics de base pour participants",
+                        "📲 QR code avancé avec preview",
+                        "🆘 Contact d'urgence pour paiements",
+                        "🌙 Mode sombre complet",
+                        "♿ Accessibilité renforcée",
+                        "⚡ Performance optimisée <100ms",
+                        "✨ Animations fluides Material Design"
+                    ],
+                    technicalGoals: [
+                        "🎯 500+ utilisateurs actifs",
+                        "🗣️ Support vocal Wolof/Français",
+                        "⚡ Temps réponse <100ms",
+                        "♿ Score accessibilité >90%",
+                        "📱 Support offline basique"
+                    ]
+                },
+                {
+                    version: "V2.0",
+                    codename: "UBUNTU",
+                    theme: "🤝 La Solidarité",
+                    period: "Juin - Novembre 2026",
+                    status: "planned",
+                    description: "Renforcer les liens communautaires et l'entraide",
+                    color: "from-purple-500 to-pink-600",
+                    features: [
+                        "💎 Système SunuPoints complet",
+                        "🛒 Marketplace services & produits",
+                        "👫 Système de parrainage",
+                        "🏘️ Tontines communautaires de quartier",
+                        "💬 Chat intégré dans les groupes",
+                        "📊 Analytics avancées administrateurs",
+                        "🎁 Système bonus et récompenses",
+                        "📱 Partage social des succès",
+                        "🔄 Tontines récurrentes automatiques",
+                        "🌍 Support multilingue (Fr, Wolof, Anglais)"
+                    ],
+                    technicalGoals: [
+                        "🎯 2000+ utilisateurs actifs",
+                        "🤝 100+ tontines communautaires",
+                        "📈 Taux rétention > 75%",
+                        "💬 500+ messages échangés/jour",
+                        "🌍 3 langues supportées"
+                    ]
+                },
+                {
+                    version: "V2.5",
+                    codename: "BOOST",
+                    theme: "💎 L'Expérience Premium",
+                    period: "Décembre 2026 - Mars 2027",
+                    status: "concept",
+                    description: "Services premium pour membres fidèles",
+                    color: "from-yellow-500 to-orange-600",
+                    features: [
+                        "👑 Programme Premium exclusif",
+                        "🎪 Événements Premium bimensuels",
+                        "🆘 Support prioritaire VIP",
+                        "🎨 Personnalisation avancée interface",
+                        "🌐 Tableau de bord web organisateurs",
+                        "🏆 Tontines Premium récompenses élevées",
+                        "💼 Outils gestion avancés",
+                        "📊 Rapports détaillés personnalisés",
+                        "🔒 Fonctionnalités sécurité premium",
+                        "🎁 Événements physiques exclusifs"
+                    ],
+                    technicalGoals: [
+                        "🎯 5000+ utilisateurs dont 500 premium",
+                        "💎 20% conversion vers premium",
+                        "🏆 20 membres chanceux/événement",
+                        "📊 Dashboard web complet",
+                        "💰 Revenue récurrent stable"
+                    ]
+                },
+                {
+                    version: "V3.0",
+                    codename: "SINGKOO",
+                    theme: "🔮 L'App qui Anticipe",
+                    period: "Avril - Septembre 2027",
+                    status: "concept",
+                    description: "Intelligence artificielle et apprentissage automatique",
+                    color: "from-emerald-500 to-teal-600",
+                    features: [
+                        "🤖 Assistant IA SunuTontine",
+                        "🔮 Prédictions comportement utilisateurs",
+                        "💡 Recommandations personnalisées IA",
+                        "⚙️ Optimisation automatique intelligente",
+                        "🗣️ Assistant conversationnel 24/7",
+                        "🏛️ Services néobanque intégrés",
+                        "💰 Épargne automatique intelligente",
+                        "💳 Microcrédits basés historique",
+                        "🌍 Expansion Mali, Burkina, Côte d'Ivoire",
+                        "🌐 Support diaspora Europe/USA"
+                    ],
+                    technicalGoals: [
+                        "🎯 15000+ utilisateurs actifs",
+                        "🤖 95% précision prédictions IA",
+                        "💡 80% adoption assistant IA",
+                        "🔐 99.99% sécurité transactions",
+                        "🌍 5+ pays africains"
+                    ]
+                },
+                {
+                    version: "V4.0",
+                    codename: "TAWFEEKH",
+                    theme: "🤝 Le Succès Partagé",
+                    period: "Octobre 2027 - Mars 2028",
+                    status: "vision",
+                    description: "Épargne collective pour projets d'impact",
+                    color: "from-teal-500 to-cyan-600",
+                    features: [
+                        "🏢 Tontines d'affaires PME/coopératives",
+                        "🎓 Programmes épargne éducative enfants",
+                        "🌾 Tontines saisonnières cycles agricoles",
+                        "🌍 Tontines transfrontalières diaspora",
+                        "🏛️ Partenariats institutionnels (écoles, hôpitaux)",
+                        "🌱 Projets développement durable",
+                        "📊 Impact social mesurable",
+                        "💼 Services bancaires complets",
+                        "🔗 Blockchain for transparency",
+                        "🤝 Partenariats ONG internationales"
+                    ],
+                    technicalGoals: [
+                        "🎯 50000+ utilisateurs actifs",
+                        "🏢 1000+ tontines d'affaires",
+                        "🎓 500+ programmes éducatifs",
+                        "🌍 15+ pays africains",
+                        "💰 100M+ FCFA mobilisés"
+                    ]
+                },
+                {
+                    version: "V4.5",
+                    codename: "LUXE",
+                    theme: "💎 Les Services VIP",
+                    period: "Avril - Juillet 2028",
+                    status: "vision",
+                    description: "Services personnalisés haut de gamme",
+                    color: "from-rose-500 to-pink-600",
+                    features: [
+                        "👨‍💼 Conseiller financier personnel dédié",
+                        "🛡️ Assurance tontine complète",
+                        "💸 Transferts internationaux instantanés",
+                        "🎪 Événements physiques VIP exclusifs",
+                        "💼 Consultation business personnalisée",
+                        "🏆 Services concierge financier",
+                        "📊 Rapports performance sur mesure",
+                        "🎯 Stratégies investissement personnalisées",
+                        "🌍 Accès marchés internationaux",
+                        "👑 Statut VIP priorité absolue"
+                    ],
+                    technicalGoals: [
+                        "🎯 100+ clients VIP",
+                        "💎 Services sur mesure 24/7",
+                        "🏆 Satisfaction client >95%",
+                        "💰 Revenue premium significatif",
+                        "🌍 Services internationaux"
+                    ]
+                },
+                {
+                    version: "V5.0",
+                    codename: "WEREWERE",
+                    theme: "🏛️ La Banque du Peuple",
+                    period: "Août 2028 - Janvier 2029",
+                    status: "vision",
+                    description: "Services bancaires complets et accessibles",
+                    color: "from-blue-600 to-indigo-700",
+                    features: [
+                        "🏦 Comptes épargne intérêts compétitifs",
+                        "💳 Microcrédits historique tontine",
+                        "🛡️ Assurance vie groupe familiale",
+                        "👴 Planification retraite automatique",
+                        "📈 Investissements collaboratifs rentables",
+                        "🏠 Financement immobilier accessible",
+                        "💼 Services entreprises PME",
+                        "🌍 Expansion internationale complète",
+                        "🔗 Intégration systèmes bancaires",
+                        "📊 Conseils financiers automatisés"
+                    ],
+                    technicalGoals: [
+                        "🎯 200000+ comptes bancaires",
+                        "💰 1B+ FCFA sous gestion",
+                        "🏦 Licence bancaire officielle",
+                        "🌍 Présence 20+ pays",
+                        "🤝 Partenariats banques centrales"
+                    ]
+                },
+                {
+                    version: "V5.5",
+                    codename: "AKAAL",
+                    theme: "🧠 L'Intelligence qui Aide",
+                    period: "Février - Mai 2029",
+                    status: "vision",
+                    description: "IA prédictive complète et assistant personnel",
+                    color: "from-purple-600 to-indigo-700",
+                    features: [
+                        "🤖 Épargne automatique selon revenus",
+                        "🎯 Tontines suggérées personnalisées parfaitement",
+                        "💰 Optimisation fiscale automatique légale",
+                        "⚠️ Alertes préventives problèmes financiers",
+                        "🗣️ Assistant vocal 24/7 Wolof et Français",
+                        "📊 Prédictions économiques personnelles",
+                        "🧠 Apprentissage continu préférences",
+                        "💡 Conseils investissement temps réel",
+                        "🔮 Planification financière automatique",
+                        "🎓 Formation financière adaptative"
+                    ],
+                    technicalGoals: [
+                        "🎯 IA prédictive 99% précision",
+                        "🧠 Apprentissage machine avancé",
+                        "🗣️ Reconnaissance vocale parfaite",
+                        "⚡ Réponses instantanées <1s",
+                        "🌍 Adaptation culturelle locale"
+                    ]
+                },
+                {
+                    version: "V6.0",
+                    codename: "JOKKO",
+                    theme: "🌐 Le Monde Connecté",
+                    period: "Juin - Novembre 2029",
+                    status: "vision",
+                    description: "Connexion Afrique-monde diaspora",
+                    color: "from-green-600 to-emerald-700",
+                    features: [
+                        "📱 Support M-Pesa (Kenya, Tanzanie, Ouganda)",
+                        "🌍 Services diaspora (Europe, USA, Canada)",
+                        "💱 Multi-devises (EUR, USD, GBP, CAD, CFA)",
+                        "⚡ Transferts instantanés inter-continentaux",
+                        "🏛️ Conformité bancaire internationale",
+                        "🤝 Réseau tontines intercontinentales",
+                        "📊 Analytics économiques macro",
+                        "🌐 Plateforme échange culturel",
+                        "💼 Services commerce international",
+                        "🎓 Université virtuelle diaspora"
+                    ],
+                    technicalGoals: [
+                        "🎯 500000+ utilisateurs mondiaux",
+                        "🌍 Présence 50+ pays",
+                        "💱 20+ devises supportées",
+                        "⚡ Transferts <5min worldwide",
+                        "🏛️ Conformité réglementaire globale"
+                    ]
+                },
+                {
+                    version: "V6.5",
+                    codename: "IMPACT",
+                    theme: "🌱 Le Changement Positif",
+                    period: "Décembre 2029 - Mars 2030",
+                    status: "vision",
+                    description: "Responsabilité sociale et développement durable",
+                    color: "from-emerald-600 to-green-700",
+                    features: [
+                        "🌱 Tontines vertes projets écologiques",
+                        "🎓 Financement éducation collective villageoise",
+                        "🌾 Support agriculture durable moderne",
+                        "🤝 Partenariats ONG développement rural",
+                        "📊 Mesure impact réel transparent",
+                        "🏥 Projets santé communautaire",
+                        "💡 Innovation sociale collaborative",
+                        "🌍 Objectifs développement durable ONU",
+                        "📈 ROI social mesurable",
+                        "🏆 Certification impact social"
+                    ],
+                    technicalGoals: [
+                        "🎯 Impact 1M+ vies améliorées",
+                        "🌱 1000+ projets verts financés",
+                        "🎓 100000+ enfants scolarisés",
+                        "📊 Impact ODD mesurable",
+                        "🏆 Reconnaissance internationale"
+                    ]
+                },
+                {
+                    version: "V7.0",
+                    codename: "LEGACY",
+                    theme: "👑 L'Héritage Durable",
+                    period: "Avril 2030+",
+                    status: "vision",
+                    description: "L'héritage qui change l'Afrique financièrement",
+                    color: "from-yellow-600 to-orange-700",
+                    features: [
+                        "🎓 Formation financière certifiante reconnue",
+                        "🔗 Blockchain native décentralisation complète",
+                        "🏛️ DAO Governance gestion communautaire",
+                        "🌐 Écosystème partenaires (commerce, éducation, santé)",
+                        "👨‍👩‍👧‍👦 Planification succession numérique familiale",
+                        "🏆 Université SunuTontine reconnue",
+                        "💡 Incubateur startups africaines",
+                        "🌍 Standard épargne collaborative mondial",
+                        "📚 Recherche économie africaine",
+                        "🔮 Vision 2050: Afrique financièrement libre"
+                    ],
+                    technicalGoals: [
+                        "🎯 10M+ utilisateurs Afrique",
+                        "👑 Standard épargne continentale",
+                        "🎓 100000+ diplômés formation",
+                        "🏛️ Influence politique économique",
+                        "🌍 Modèle exporté autres continents"
+                    ]
+                }
+            ];
+
+            // --- TAB FUNCTIONALITY ---
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            function switchTab(targetTab) {
+                // Remove active class from all buttons
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Hide all tab contents
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                    content.classList.remove('active');
+                });
+
+                // Activate the clicked button
+                const clickedButton = document.querySelector(`[data-tab="${targetTab}"]`);
+                clickedButton.classList.add('active');
+
+                // Show the corresponding content
+                const targetContent = document.querySelector(`[data-content="${targetTab}"]`);
+                targetContent.classList.remove('hidden');
+                targetContent.classList.add('active');
+
+                // Special handling for versions tab
+                if (targetTab === 'versions') {
+                    renderVersionsGrid();
+                }
+
+                // Re-initialize icons after tab switch
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }
+
+            // Add click event listeners to tab buttons
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.getAttribute('data-tab');
+                    switchTab(targetTab);
+                });
+            });
+
+            // --- VERSIONS GRID RENDERING ---
+            function renderVersionsGrid() {
+                const versionsGrid = document.getElementById('versions-grid');
+                if (!versionsGrid) return;
+
+                const statusColors = {
+                    current: 'status-current',
+                    planned: 'status-planned', 
+                    concept: 'status-concept',
+                    vision: 'status-vision'
+                };
+
+                const statusLabels = {
+                    current: '� En cours',
+                    planned: '📋 Planifié',
+                    concept: '💡 Concept',
+                    vision: '🔮 Vision'
+                };
+
+                versionsGrid.innerHTML = versions.map(version => `
+                    <div class="version-card p-6 hover:scale-105 transition-all duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="bg-gradient-to-r ${version.color} w-12 h-12 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg">
+                                ${version.version.split('.')[0]}.${version.version.split('.')[1]}
+                            </div>
+                            <span class="px-3 py-1 ${statusColors[version.status]} text-xs font-semibold rounded-full">
+                                ${statusLabels[version.status]}
+                            </span>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="text-xl font-bold text-slate-800 mb-1">${version.version} "${version.codename}"</h3>
+                            <p class="text-sm text-slate-500 mb-2">${version.period}</p>
+                            <h4 class="font-semibold text-slate-700 mb-2">${version.theme}</h4>
+                            <p class="text-sm text-slate-600 italic">${version.description}</p>
+                        </div>
+
+                        <details class="mb-4">
+                            <summary class="cursor-pointer font-semibold text-slate-700 hover:text-blue-600 flex items-center">
+                                <i data-lucide="star" class="w-4 h-4 mr-2"></i>
+                                Fonctionnalités Clés (${version.features.length})
+                            </summary>
+                            <div class="mt-3 grid grid-cols-1 gap-2">
+                                ${version.features.slice(0, 6).map(feature => `
+                                    <div class="feature-badge text-xs">${feature}</div>
+                                `).join('')}
+                                ${version.features.length > 6 ? `<div class="text-xs text-slate-500 italic">+${version.features.length - 6} autres fonctionnalités...</div>` : ''}
+                            </div>
+                        </details>
+
+                        <details>
+                            <summary class="cursor-pointer font-semibold text-slate-700 hover:text-blue-600 flex items-center">
+                                <i data-lucide="target" class="w-4 h-4 mr-2"></i>
+                                Objectifs Techniques
+                            </summary>
+                            <ul class="mt-3 space-y-1 text-xs text-slate-600">
+                                ${version.technicalGoals.map(goal => `<li class="flex items-center"><span class="w-1 h-1 bg-slate-400 rounded-full mr-2"></span>${goal}</li>`).join('')}
+                            </ul>
+                        </details>
+                    </div>
+                `).join('');
+
+                // Re-initialize icons
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }
+
+            // --- ROADMAP DATA ---
             const roadmap = [
                 {
                     phase: "Phase 1: Développement Backend",
@@ -292,7 +1196,7 @@
                                 <li>Structure de projet simple par dossiers</li>
                                 <li>Configuration Spring Boot 3.2, PostgreSQL 17, Redis 7</li>
                                 <li>Configuration Logback (compliance RGPD)</li>
-                                <li>Pipeline CI/CD sur GitHub Actions pour Azure, Azure, Azure, Railway, Koyeb, Render etc, Koyeb, Render etc, Koyeb, Render etc.app</li>
+                                <li>Pipeline CI/CD sur GitHub Actions pour Azure/Railway/Render</li>
                             </ul>
                             <h5 class="font-bold mb-2">👤 Module Utilisateur (Jours 3-4)</h5>
                             <p class="text-sm mb-2">Création des entités, services et endpoints pour l'authentification (OTP, JWT) et la gestion de profil.</p>
@@ -374,6 +1278,209 @@
                             <p class="text-sm">Création de la page d'accueil avec vue d'ensemble, cartes visuelles, et actions rapides.</p>
                         `},
                         { type: 'week', week: 11, start: "2025-11-07", end: "2025-11-13", title: "Paiements & Mobile Money", details: `
+                            <h5 class="font-bold mb-2">💳 Intégration des Paiements (Jours 1-4)</h5>
+                            <p class="text-sm mb-4">Flux de paiement complet, sélection de la méthode, historique et gestion des erreurs.</p>
+                            <h5 class="font-bold mb-2">📱 UX Mobile Money (Jours 5-7)</h5>
+                            <p class="text-sm">Intégration via deep linking, callbacks de confirmation et génération de reçus.</p>
+                        `},
+                        { type: 'week', week: 12, start: "2025-11-14", end: "2025-11-20", title: "Tirages & Notifications", details: `
+                            <h5 class="font-bold mb-2">🎯 UI Tirages/Rounds (Jours 1-3)</h5>
+                            <p class="text-sm mb-4">Vue calendrier, interface pour lancer les tirages, et écrans d'annonce des gagnants.</p>
+                            <h5 class="font-bold mb-2">🔔 Système de Notifications (Jours 4-6)</h5>
+                            <p class="text-sm mb-4">Intégration Push (FCM), centre de notifications in-app, et écran de préférences.</p>
+                        `},
+                        { type: 'week', week: 13, start: "2025-11-21", end: "2025-11-27", title: "Tests Frontend & Intégration", details: `
+                            <h5 class="font-bold mb-2">🧪 Tests Unitaires & Widget (Jours 1-3)</h5>
+                            <p class="text-sm mb-4">Tests unitaires des services, widgets tests, et tests d'intégration avec l'API.</p>
+                            <h5 class="font-bold mb-2">📱 Tests sur Appareils Réels (Jours 4-5)</h5>
+                            <p class="text-sm mb-4">Tests sur différents modèles Android/iOS, différentes versions OS, performance.</p>
+                            <h5 class="font-bold mb-2">🔄 Tests End-to-End Mobile (Jours 6-7)</h5>
+                            <p class="text-sm">Tests complets des workflows avec Detox ou Patrol, validation UX.</p>
+                        `},
+                        { type: 'week', week: 14, start: "2025-11-28", end: "2025-12-04", title: "Optimisation & Performance", details: `
+                            <h5 class="font-bold mb-2">⚡ Optimisation des Performances (Jours 1-3)</h5>
+                            <p class="text-sm mb-4">Lazy loading, optimisation des images, réduction du bundle. Objectif de démarrage < 2s.</p>
+                            <h5 class="font-bold mb-2">🎨 Finition UI/UX (Jours 4-5)</h5>
+                            <p class="text-sm mb-4">Ajout d'animations, loading states, et écrans d'erreur/vides pertinents.</p>
+                            <h5 class="font-bold mb-2">🔍 Tests d'Accessibilité (Jours 6-7)</h5>
+                            <p class="text-sm">Validation WCAG, support des lecteurs d'écran, navigation au clavier.</p>
+                        `},
+                        { type: 'week', week: 15, start: "2025-12-05", end: "2025-12-11", title: "Beta Testing & Feedback", details: `
+                            <h5 class="font-bold mb-2">👥 Programme Beta Testing (Jours 1-3)</h5>
+                            <p class="text-sm mb-4">Recrutement de 20+ beta testeurs, distribution via TestFlight/Firebase App Distribution.</p>
+                            <h5 class="font-bold mb-2">📊 Collecte & Analyse Feedback (Jours 4-5)</h5>
+                            <p class="text-sm mb-4">Mise en place d'analytics, heatmaps, questionnaires de satisfaction, monitoring crash.</p>
+                            <h5 class="font-bold mb-2">🔧 Corrections & Améliorations (Jours 6-7)</h5>
+                            <p class="text-sm">Implémentation des corrections critiques basées sur les retours beta.</p>
+                        `},
+                        { type: 'week', week: 16, start: "2025-12-12", end: "2025-12-18", title: "Préparation Stores & Compliance", details: `
+                            <h5 class="font-bold mb-2">📱 Assets & Métadonnées Stores (Jours 1-2)</h5>
+                            <p class="text-sm mb-4">Création des screenshots, vidéos promo, icônes adaptatives, descriptions multilingues.</p>
+                            <h5 class="font-bold mb-2">🔒 Compliance & Legal (Jours 3-4)</h5>
+                            <p class="text-sm mb-4">Validation RGPD, conditions d'utilisation, politique de confidentialité, licences.</p>
+                            <h5 class="font-bold mb-2">✅ Review Guidelines (Jours 5-7)</h5>
+                            <p class="text-sm">Vérification compliance Apple/Google guidelines, préparation réponses aux reviewers.</p>
+                        `},
+                        { type: 'week', week: 17, start: "2025-12-19", end: "2025-12-25", title: "Soumission Stores & Monitoring", details: `
+                            <h5 class="font-bold mb-2">🚀 Soumission App Store & Google Play (Jours 1-2)</h5>
+                            <p class="text-sm mb-4">Upload des builds finaux, soumission pour review, configuration App Store Connect.</p>
+                            <h5 class="font-bold mb-2">📊 Setup Analytics & Crashlytics (Jours 3-4)</h5>
+                            <p class="text-sm mb-4">Configuration Firebase Analytics, Crashlytics, RevenueCat pour monétisation future.</p>
+                            <h5 class="font-bold mb-2">🎯 Stratégie de Lancement (Jours 5-7)</h5>
+                            <p class="text-sm">Préparation campagne marketing, communication réseaux sociaux, support utilisateur.</p>
+                        `}
+                    ]
+                },
+                {
+                    phase: "Phase 3: Post-Lancement & Stabilisation",
+                    phaseColor: "bg-emerald-500",
+                    items: [
+                        { type: 'week', week: 18, start: "2025-12-26", end: "2026-01-01", title: "Lancement & Monitoring Intensif", details: `
+                            <h5 class="font-bold mb-2">🎉 Jour J - Lancement Public (Jours 1-2)</h5>
+                            <p class="text-sm mb-4">Activation du trafic en production, surveillance 24/7, support technique en standby.</p>
+                            <h5 class="font-bold mb-2">📊 Monitoring & Analytics (Jours 3-5)</h5>
+                            <p class="text-sm mb-4">Analyse en temps réel des métriques, performance, comportement utilisateur, taux de conversion.</p>
+                            <h5 class="font-bold mb-2">🆘 Support Utilisateur (Jours 6-7)</h5>
+                            <p class="text-sm">Mise en place support chat, FAQ dynamique, escalade des bugs critiques.</p>
+                        `},
+                        { type: 'week', week: 19, start: "2026-01-02", end: "2026-01-08", title: "Hotfixes & Optimisations", details: `
+                            <h5 class="font-bold mb-2">🔧 Corrections Critiques (Jours 1-3)</h5>
+                            <p class="text-sm mb-4">Résolution des bugs signalés, optimisations performance basées sur les données réelles.</p>
+                            <h5 class="font-bold mb-2">📈 Analyse des Métriques (Jours 4-5)</h5>
+                            <p class="text-sm mb-4">Analyse détaillée du comportement utilisateur, identification des goulots d'étranglement.</p>
+                            <h5 class="font-bold mb-2">🎯 Optimisation Conversion (Jours 6-7)</h5>
+                            <p class="text-sm">A/B testing sur les flows critiques, amélioration du taux d'inscription.</p>
+                        `},
+                        { type: 'week', week: 20, start: "2026-01-09", end: "2026-01-15", title: "Stabilisation & Documentation", details: `
+                            <h5 class="font-bold mb-2">📚 Documentation Post-Mortem (Jours 1-2)</h5>
+                            <p class="text-sm mb-4">Retour d'expérience sur le lancement, leçons apprises, améliorations process.</p>
+                            <h5 class="font-bold mb-2">🔄 Optimisation Infrastructure (Jours 3-4)</h5>
+                            <p class="text-sm mb-4">Ajustement auto-scaling, optimisation coûts cloud, amélioration résilience.</p>
+                            <h5 class="font-bold mb-2">📋 Roadmap V1.1 (Jours 5-7)</h5>
+                            <p class="text-sm">Planification des premières évolutions basées sur feedback utilisateur réel.</p>
+                        `}
+                    ]
+                }
+            ];
+
+            // --- TIMELINE RENDERING ---
+            const container = document.getElementById('timeline-container');
+            const today = new Date();
+
+            const dateElement = document.getElementById('current-date');
+            if (dateElement && dateElement.querySelector('p:first-child')) {
+                dateElement.querySelector('p:first-child').textContent = today.toLocaleDateString('fr-FR', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            }
+
+            if (container) {
+                roadmap.forEach(phaseData => {
+                    const phaseHeader = document.createElement('div');
+                    phaseHeader.className = 'flex items-center gap-4 mb-4';
+                    phaseHeader.innerHTML = `
+                        <span class="flex-shrink-0 w-3 h-3 ${phaseData.phaseColor} rounded-full"></span>
+                        <div class="w-full h-px bg-slate-200"></div>
+                        <h3 class="flex-shrink-0 text-xl font-semibold text-slate-700">${phaseData.phase}</h3>
+                        <div class="w-full h-px bg-slate-200"></div>
+                    `;
+                    container.appendChild(phaseHeader);
+
+                    phaseData.items.forEach(itemData => {
+                        const startDate = new Date(itemData.start);
+                        const endDate = new Date(itemData.end);
+                        startDate.setHours(0, 0, 0, 0);
+                        endDate.setHours(23, 59, 59, 999);
+
+                        const isCurrent = today >= startDate && today <= endDate;
+                        const isPast = today > endDate;
+
+                        const itemElement = document.createElement('div');
+                        itemElement.className = 'timeline-item relative pl-10';
+                        
+                        let indicatorContent, statusIcon, statusColor, statusText, detailsClass;
+
+                        if(itemData.type === 'week') {
+                            indicatorContent = itemData.week;
+                            detailsClass = isCurrent ? 'active-week' : '';
+                            if (isCurrent) {
+                                statusIcon = `<svg class="w-6 h-6 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+                                statusColor = 'text-blue-600';
+                                statusText = 'En cours';
+                            } else if (isPast) {
+                                statusIcon = `<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>`;
+                                statusColor = 'text-green-500';
+                                statusText = 'Terminé';
+                            } else {
+                                statusIcon = `<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0h18M-4.5 12h27" /></svg>`;
+                                statusColor = 'text-slate-400';
+                                statusText = 'À venir';
+                            }
+                        } else { // Pause
+                            indicatorContent = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1zM9 9a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1zM9 13a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd" /></svg>`;
+                            detailsClass = 'pause-week';
+                             if (isCurrent) {
+                                statusIcon = `<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9v6m-4.5 0V9M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+                                statusColor = 'text-slate-600';
+                                statusText = 'En pause';
+                            } else if (isPast) {
+                                statusIcon = `<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>`;
+                                statusColor = 'text-green-500';
+                                statusText = 'Terminé';
+                            } else {
+                                statusIcon = `<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0h18M-4.5 12h27" /></svg>`;
+                                statusColor = 'text-slate-400';
+                                statusText = 'À venir';
+                            }
+                        }
+
+                        itemElement.innerHTML = `
+                            <div class="absolute left-0 top-0 w-10 h-10 week-indicator rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm transform -translate-x-1/2 ring-8 ring-slate-50">
+                                ${indicatorContent}
+                            </div>
+                            <details class="version-card transition-all ${detailsClass}" ${isCurrent ? 'open' : ''}>
+                                <summary class="p-6 cursor-pointer">
+                                    <div class="flex flex-col sm:flex-row justify-between sm:items-center">
+                                        <div class="flex-grow">
+                                            <p class="text-sm text-slate-500">${startDate.toLocaleDateString('fr-FR', {day: '2-digit', month: 'short'})} - ${endDate.toLocaleDateString('fr-FR', {day: '2-digit', month: 'short', year: 'numeric'})}</p>
+                                            <h4 class="text-xl font-bold text-slate-800">${itemData.title}</h4>
+                                        </div>
+                                        <div class="flex items-center gap-2 mt-2 sm:mt-0 flex-shrink-0">
+                                            <div class="flex items-center gap-2 ${statusColor}">
+                                                ${statusIcon}
+                                                <span class="font-semibold">${statusText}</span>
+                                            </div>
+                                            <div class="arrow ml-4 text-slate-400">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </summary>
+                                <div class="px-6 pb-6 border-t border-slate-200 text-slate-700">
+                                    ${itemData.details}
+                                </div>
+                            </details>
+                        `;
+                        container.appendChild(itemElement);
+
+                        if (isCurrent) {
+                            setTimeout(() => {
+                                itemElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }, 300);
+                        }
+                    });
+                });
+            }
+
+            // Initialize the first tab (roadmap) and icons
+            switchTab('roadmap');
+        });
+    </script>
+</body>
+</html>
                             <h5 class="font-bold mb-2">💳 Intégration des Paiements (Jours 1-4)</h5>
                             <p class="text-sm mb-4">Flux de paiement complet, sélection de la méthode, historique et gestion des erreurs.</p>
                             <h5 class="font-bold mb-2">📱 UX Mobile Money (Jours 5-7)</h5>
@@ -562,6 +1669,90 @@
                     }
                 });
             });
+
+            // --- VERSION SIDEBAR FUNCTIONALITY ---
+            const versionToggle = document.getElementById('versionToggle');
+            const versionSidebar = document.getElementById('versionSidebar');
+            const versionOverlay = document.getElementById('versionOverlay');
+            const closeSidebar = document.getElementById('closeSidebar');
+            const versionsContainer = document.getElementById('versionsContainer');
+
+            // Toggle sidebar
+            versionToggle.addEventListener('click', () => {
+                versionSidebar.classList.add('open');
+                versionOverlay.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            });
+
+            // Close sidebar
+            function closeSidebarFunc() {
+                versionSidebar.classList.remove('open');
+                versionOverlay.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+
+            closeSidebar.addEventListener('click', closeSidebarFunc);
+            versionOverlay.addEventListener('click', closeSidebarFunc);
+
+            // Escape key to close
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && versionSidebar.classList.contains('open')) {
+                    closeSidebarFunc();
+                }
+            });
+
+            // Render versions
+            function renderVersions() {
+                versionsContainer.innerHTML = versions.map(version => {
+                    const statusBadge = {
+                        current: '<span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">🚀 En cours</span>',
+                        planned: '<span class="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">📋 Planifié</span>',
+                        concept: '<span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full">💡 Concept</span>',
+                        vision: '<span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded-full">🔮 Vision</span>'
+                    };
+
+                    const cardClass = version.status === 'current' ? 'version-card version-current' : 
+                                     version.status === 'vision' ? 'version-card version-coming-soon' : 'version-card';
+
+                    return `
+                        <div class="${cardClass} bg-white rounded-xl shadow-md p-4">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h3 class="text-lg font-bold text-slate-800">${version.version} "${version.codename}"</h3>
+                                    <p class="text-sm text-slate-600">${version.period}</p>
+                                </div>
+                                ${statusBadge[version.status]}
+                            </div>
+                            
+                            <div class="mb-3">
+                                <h4 class="font-semibold text-slate-700 mb-1">${version.theme}</h4>
+                                <p class="text-sm text-slate-600 italic">${version.description}</p>
+                            </div>
+
+                            <details class="mb-3">
+                                <summary class="cursor-pointer font-semibold text-slate-700 hover:text-blue-600">
+                                    ✨ Fonctionnalités Clés (${version.features.length})
+                                </summary>
+                                <ul class="mt-2 space-y-1 text-xs text-slate-600">
+                                    ${version.features.map(feature => `<li>${feature}</li>`).join('')}
+                                </ul>
+                            </details>
+
+                            <details>
+                                <summary class="cursor-pointer font-semibold text-slate-700 hover:text-blue-600">
+                                    🎯 Objectifs Techniques
+                                </summary>
+                                <ul class="mt-2 space-y-1 text-xs text-slate-600">
+                                    ${version.technicalGoals.map(goal => `<li>${goal}</li>`).join('')}
+                                </ul>
+                            </details>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Initialize versions
+            renderVersions();
         });
     </script>
 </body>
